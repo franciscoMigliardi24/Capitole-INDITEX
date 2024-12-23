@@ -1,7 +1,7 @@
 package com.inditex.interview.infrastructure.controller.rest;
 
 import com.inditex.interview.application.PriceUseCase;
-import com.inditex.interview.domain.ChangeName;
+import com.inditex.interview.domain.GetPricePort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/api/prices")
 public class PriceController {
 
-    private final ChangeName priceUseCase;
+    private final GetPricePort priceUseCase;
 
     public PriceController(PriceUseCase priceUseCase) {
         this.priceUseCase = priceUseCase;
