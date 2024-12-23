@@ -1,0 +1,97 @@
+openapi: 3.0.3
+info:
+  title: Price Service
+  description: >
+    Servicio para consultar el precio aplicable de un producto a una fecha/hora dada,
+    perteneciente a una cadena (brand).
+  version: "1.0.0"
+
+servers:
+  - url: http://localhost:8080
+    description: Servidor local de desarrollo
+
+paths:
+  /api/prices:
+    get:
+      summary: "Obtener precio aplicable"
+      description: >
+        Retorna el precio aplicable para un determinado producto
+        y cadena (brand) en la fecha/hora especificada.
+      operationId: getApplicablePrice
+      parameters:
+        - name: applicationDate
+          in: query
+          required: true
+          description: "Fecha y hora de aplicación en formato ISO-8601 (yyyy-MM-dd'T'HH:mm:ss)."
+          schema:
+            type: string
+            format: date-time
+          example: "2020-06-14T10:00:00"
+
+        - name: productId
+          in: query
+          required: true
+          description: "Identificador del producto."
+          schema:
+            type: integer
+          example: 35455
+
+        - name: brandId
+          in: query
+          required: true
+          description: "Identificador de la cadena (brand)."
+          schema:
+            type: integer
+          example: 1
+
+      responses:
+        '200':
+          description: "Precio obtenido correctamente"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PriceResponse"
+        '404':
+          description: "No se encontró un precio aplicable"
+
+components:
+  schemas:
+    PriceResponse:
+      type: object
+      description: "Respuesta con el precio y la tarifa aplicada."
+      properties:
+        productId:
+          type: integer
+          description: "Identificador del producto"
+          example: 35455
+        brandId:
+          type: integer
+          description: "Identificador de la cadena"
+          example: 1
+        priceList:
+          type: integer
+          description: "Tarifa (Price List) aplicada"
+          example: 2
+        startDate:
+          type: string
+          format: date-time
+          description: "Fecha y hora de inicio de la tarifa"
+          example: "2020-06-14T15:00:00"
+        endDate:
+          type: string
+          format: date-time
+          description: "Fecha y hora de fin de la tarifa"
+          example: "2020-06-14T18:30:00"
+        priority:
+          type: integer
+          description: "Prioridad de la tarifa"
+          example: 1
+        price:
+          type: number
+          format: double
+          description: "Precio final de venta"
+          example: 25.45
+        currency:
+          type: string
+          description: "Moneda ISO"
+          example: "EUR"
